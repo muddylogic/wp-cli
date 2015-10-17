@@ -48,10 +48,16 @@ Feature: Manage sites in a multisite installation
       | 1       | http://example.com/       |
       | 2       | http://example.com/first/ |
 
-    When I run `wp site list --field=url --blog_id=2`
+    When I run `wp site list --field=url --filter_blog_id=2`
     Then STDOUT should be:
       """
       http://example.com/first/
+      """
+
+    When I run `wp site list --field=blog_id --filter_path=/first/`
+    Then STDOUT should be:
+      """
+      2
       """
 
   Scenario: Delete a site by slug

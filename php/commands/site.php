@@ -334,7 +334,7 @@ class Site_Command extends \WP_CLI\CommandWithDBObject {
 	 * [--network=<id>]
 	 * : The network to which the sites belong.
 	 *
-	 * [--<field>=<value>]
+	 * [--filter_<field>=<value>]
 	 * : Filter by one or more fields.
 	 *
 	 * [--field=<field>]
@@ -372,6 +372,9 @@ class Site_Command extends \WP_CLI\CommandWithDBObject {
 	 *     # Output a simple list of site URLs
 	 *     wp site list --field=url
 	 *
+     *     # Output a simple list of site IDs when filtered by path
+     *     wp site list --field=blog_id --filter_path=/site/
+     *
 	 * @subcommand list
 	 */
 	public function list_( $_, $assoc_args ) {
@@ -396,8 +399,8 @@ class Site_Command extends \WP_CLI\CommandWithDBObject {
 
 		$site_cols = array( 'blog_id', 'url', 'last_updated', 'registered', 'site_id', 'domain', 'path', 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id' );
 		foreach( $site_cols as $col ) {
-			if ( isset( $assoc_args[ $col ] ) ) {
-				$where[ $col ] = $assoc_args[ $col ];
+			if ( isset( $assoc_args[ "filter_{$col}" ] ) ) {
+				$where[ $col ] = $assoc_args[ "filter_{$col}" ];
 			}
 		}
 
